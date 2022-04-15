@@ -52,6 +52,7 @@ const Search = styled.span`
   position: relative;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 const Circle = styled(motion.span)`
   position: absolute;
