@@ -21,7 +21,17 @@ export interface IGetMovies {
 }
 
 export const getMovies = () => {
-  return fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`).then(
-    (response) => response.json()
-  );
+  return fetch(
+    `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&language=ko-KR`
+  ).then((response) => response.json());
+};
+export const getUpcomingMovies = () => {
+  return fetch(
+    `${BASE_PATH}/movie/upcoming?api_key=${API_KEY}&language=ko-KR&page=2`
+  ).then((response) => response.json());
+};
+export const getTopMovies = () => {
+  return fetch(
+    `${BASE_PATH}/movie/top_rated?api_key=${API_KEY}&language=ko-KR&page=2`
+  ).then((response) => response.json());
 };
