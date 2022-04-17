@@ -8,6 +8,16 @@ interface IMovie {
   title: string;
   overview: string;
 }
+interface IGenres {
+  name: string;
+}
+interface ICompanies {
+  logo_path: string;
+}
+interface IMovieTrailer {
+  key: string;
+  id: string;
+}
 
 export interface IGetMovies {
   dates: {
@@ -18,6 +28,22 @@ export interface IGetMovies {
   results: IMovie[];
   total_pages: number;
   total_results: number;
+}
+export interface IMovieDetail {
+  adult: boolean;
+  backdrop_path: string;
+  overview: string;
+  original_title: string;
+  poster_path: string;
+  release_date: string;
+  runtime: number;
+  vote_average: number;
+  genres: IGenres[];
+  production_companies: ICompanies[];
+}
+export interface IGetMoviesTrailer {
+  id: number;
+  results: IMovieTrailer[];
 }
 
 export const getMovies = () => {
@@ -35,3 +61,20 @@ export const getTopMovies = () => {
     `${BASE_PATH}/movie/top_rated?api_key=${API_KEY}&language=ko-KR&page=2`
   ).then((response) => response.json());
 };
+export const getMovieVideo = (movieId?: string) => {
+  return fetch(`${BASE_PATH}/moive/${movieId}/videos?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+};
+export const getMovieDetail = (movieId?: string) => {
+  return fetch(
+    `${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}&language=ko-KR`
+  ).then((response) => response.json());
+};
+
+//tv
+export function getTvDetail(tvId: string) {
+  return fetch(
+    `${BASE_PATH}/tv/${tvId}?api_key=${API_KEY}&language=ko-KR`
+  ).then((response) => response.json());
+}

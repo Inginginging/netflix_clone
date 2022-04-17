@@ -1,7 +1,7 @@
-import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { useMatch, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { makeImgPath } from "../../utils";
@@ -93,44 +93,6 @@ const SliderTitle = styled.span`
   position: absolute;
   top: -40px;
 `;
-const BigBox = styled(motion.div)`
-  position: absolute;
-  width: 40vw;
-  height: 80vh;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  z-index: 99;
-  background-color: ${(props) => props.theme.black.lighter};
-`;
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  opacity: 0;
-`;
-const BigCover = styled.div`
-  width: 100%;
-  background-size: cover;
-  background-position: center center;
-  height: 400px;
-`;
-const MovieInfo = styled.div`
-  position: relative;
-  top: -80px;
-  color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
-`;
-const BigTitle = styled.h2`
-  font-size: 46px;
-  font-weight: 450;
-  margin-bottom: 10px;
-`;
-const BigOverview = styled.p`
-  font-size: 18px;
-`;
 
 const rowVariants = {
   initial: (back: boolean) => ({
@@ -202,18 +164,6 @@ function UpcomingSlider() {
   const onBoxClick = (movieId: number) => {
     navigate(`movies/${movieId}`); //navigate를 사용하여 현재 url을 변경
   };
-  //Bigbox func
-  const movieMatch = useMatch("/movies/:movieId"); //어느 movie가 click되었나 obj를 반환해주는 hook
-  const { scrollY } = useViewportScroll(); //bigBox의 위치를 항상 정가운데에 놓기위한 변수
-  const onOverlayClick = () => {
-    navigate("/"); //다시 home으로 변경
-  };
-  //click한 movie와 받아온 data의 movie들 중 동일한 id의 movie 찾음.
-  const clickedMovie =
-    movieMatch?.params.movieId &&
-    data?.results.find(
-      (movie) => String(movie.id) === movieMatch.params.movieId
-    );
   return (
     <>
       <Wrapper>
@@ -270,38 +220,6 @@ function UpcomingSlider() {
           </Row>
         </AnimatePresence>
       </Wrapper>
-      <AnimatePresence>
-        {movieMatch ? (
-          <>
-            <Overlay
-              onClick={onOverlayClick}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            />
-            <BigBox
-              style={{ top: scrollY.get() + 50 }}
-              layoutId={movieMatch.params.movieId}
-            >
-              {clickedMovie && (
-                <>
-                  <BigCover
-                    style={{
-                      backgroundImage: `linear-gradient(transparent, rgba(0,0,0,0.8)), url(${makeImgPath(
-                        clickedMovie.backdrop_path,
-                        "w500"
-                      )})`,
-                    }}
-                  />
-                  <MovieInfo>
-                    <BigTitle>{clickedMovie.title}</BigTitle>
-                    <BigOverview>{clickedMovie.overview}</BigOverview>
-                  </MovieInfo>
-                </>
-              )}
-            </BigBox>
-          </>
-        ) : null}
-      </AnimatePresence>
     </>
   );
 }
