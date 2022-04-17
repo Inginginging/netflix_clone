@@ -9,14 +9,8 @@ interface IMovie {
   overview: string;
 }
 interface IGenres {
+  id: number;
   name: string;
-}
-interface ICompanies {
-  logo_path: string;
-}
-interface IMovieTrailer {
-  key: string;
-  id: string;
 }
 
 export interface IGetMovies {
@@ -39,11 +33,6 @@ export interface IMovieDetail {
   runtime: number;
   vote_average: number;
   genres: IGenres[];
-  production_companies: ICompanies[];
-}
-export interface IGetMoviesTrailer {
-  id: number;
-  results: IMovieTrailer[];
 }
 
 export const getMovies = () => {
@@ -60,11 +49,6 @@ export const getTopMovies = () => {
   return fetch(
     `${BASE_PATH}/movie/top_rated?api_key=${API_KEY}&language=ko-KR&page=2`
   ).then((response) => response.json());
-};
-export const getMovieVideo = (movieId?: string) => {
-  return fetch(`${BASE_PATH}/moive/${movieId}/videos?api_key=${API_KEY}`).then(
-    (response) => response.json()
-  );
 };
 export const getMovieDetail = (movieId?: string) => {
   return fetch(

@@ -4,53 +4,98 @@ import styled from "styled-components";
 import { getMovieDetail, getTvDetail, IMovieDetail } from "../api";
 import { makeImgPath } from "../utils";
 
-const BigCover = styled.div`
+const Cover = styled.div`
   width: 100%;
+  height: 450px;
+  background-position: center top;
   background-size: cover;
-  background-position: center center;
-  height: 400px;
 `;
-const MovieInfo = styled.div`
+const Bold = styled.div`
+  display: flex;
+  padding: 0px 30px;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
-  top: -80px;
-  color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
+  top: -55px;
 `;
-const BigTitle = styled.h2`
-  font-size: 46px;
-  font-weight: 450;
-  margin-bottom: 10px;
+const Title = styled.h1`
+  font-size: 40px;
+  font-weight: 400;
 `;
-const BigOverview = styled.p`
+const Rate = styled.span`
+  color: red;
+  padding-top: 15px;
+`;
+const Header = styled.header`
+  position: relative;
+  top: -40px;
+  font-size: 20px;
+  padding: 0px 20px;
+  display: flex;
+  justify-content: space-between;
+`;
+const BigGenres = styled.div``;
+const Genres = styled.span`
+  margin-right: 10px;
+`;
+const RunTime = styled.span``;
+const Overview = styled.p`
+  padding: 0px 20px;
+  position: relative;
+  top: -20px;
   font-size: 18px;
+`;
+const Side = styled.div`
+  display: flex;
+  padding: 0px 20px;
+  font-size: 18px;
+`;
+const Adult = styled.span`
+  color: red;
+  font-weight: 400;
 `;
 
 function Detail() {
   const { movieId, tvId } = useParams();
-  const { data, isLoading } = useQuery<IMovieDetail>(
+  const { data: movieData, isLoading: movieLoading } = useQuery<IMovieDetail>(
     ["detail"],
-    () => (movieId ? getMovieDetail(movieId) : getTvDetail(tvId as any)),
-    { keepPreviousData: true }
+    () => (movieId ? getMovieDetail(movieId) : getTvDetail(tvId as any))
   );
 
   return (
     <>
-      {isLoading ? (
+      {movieLoading ? (
         <span>Loading...</span>
       ) : (
         <>
-          <BigCover
+          <Cover
             style={{
-              backgroundImage: `linear-gradient(transparent, rgba(0,0,0,0.8)), url(${makeImgPath(
-                data?.backdrop_path + "",
-                "w500"
-              )})`,
+              backgroundImage: movieData
+                ? `linear-gradient(transparent, rgba(0,0,0,1)), url(${makeImgPath(
+                    movieData.backdrop_path
+                  )})`
+                : undefined,
             }}
           />
-          <MovieInfo>
-            <BigTitle>{data?.original_title}</BigTitle>
-            <BigOverview>{data?.overview}</BigOverview>
-          </MovieInfo>
+          <Bold>
+            <Title>{movieData?.original_title}</Title>
+            <Rate>★ {movieData && movieData.vote_average}</Rate>
+          </Bold>
+          <Header>
+            <BigGenres>
+              {movieData &&
+                movieData.genres.map((genre) => (
+                  <Genres key={genre.id}>{genre.name}</Genres>
+                ))}
+            </BigGenres>
+            <RunTime>런닝타임: {movieData && movieData.runtime}분</RunTime>
+          </Header>
+          <Overview>{movieData && movieData.overview}</Overview>
+          <Side>
+            <Adult>
+              {movieData?.adult ? "청소년 관람 불가" : "전체 이용가"}
+            </Adult>
+          </Side>
         </>
       )}
     </>
