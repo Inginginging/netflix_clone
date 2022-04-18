@@ -7,6 +7,7 @@ interface IMovie {
   poster_path: string;
   title: string;
   overview: string;
+  media_type: string;
 }
 interface ITv {
   id: number;
@@ -15,6 +16,7 @@ interface ITv {
   poster_path: string;
   name: string;
   release_date?: string;
+  media_type: string;
 }
 interface IGenres {
   id: number;
@@ -31,6 +33,7 @@ export interface IGetMovies {
   total_pages: number;
   total_results: number;
 }
+
 export interface IMovieDetail {
   adult: boolean;
   backdrop_path: string;
@@ -63,7 +66,16 @@ export interface ITvDetail {
   popularlity: number;
   genres: IGenres[];
 }
+export interface IMovieSearchResult {
+  page: number;
+  results: IMovie[];
+}
+export interface ITvSearchResult {
+  page: number;
+  results: ITv[];
+}
 
+//movie
 export const getMovies = () => {
   return fetch(
     `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&language=ko-KR`
@@ -109,5 +121,12 @@ export function getAiringTv() {
 export function getTvDetail(tvId?: string) {
   return fetch(
     `${BASE_PATH}/tv/${tvId}?api_key=${API_KEY}&language=ko-KR`
+  ).then((response) => response.json());
+}
+
+//search
+export function multiSearch(keyword: string | null) {
+  return fetch(
+    `${BASE_PATH}/search/multi?api_key=${API_KEY}&language=ko-KR&query=${keyword}`
   ).then((response) => response.json());
 }
