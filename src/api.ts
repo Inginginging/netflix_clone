@@ -53,6 +53,16 @@ export interface IGetLatestTv {
   name: string;
   overview: string;
 }
+export interface ITvDetail {
+  name: string;
+  backdrop_path: string;
+  overview: string;
+  poster_path: string;
+  number_of_episodes: number;
+  number_of_seasons: number;
+  popularlity: number;
+  genres: IGenres[];
+}
 
 export const getMovies = () => {
   return fetch(
@@ -96,7 +106,7 @@ export function getAiringTv() {
     (response) => response.json()
   );
 }
-export function getTvDetail(tvId: string) {
+export function getTvDetail(tvId?: string) {
   return fetch(
     `${BASE_PATH}/tv/${tvId}?api_key=${API_KEY}&language=ko-KR`
   ).then((response) => response.json());

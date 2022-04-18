@@ -158,7 +158,7 @@ function PopularTvSlider() {
     }
   };
   const onBoxClick = (tvId: number) => {
-    navigate(`tv/${tvId}`);
+    navigate(`${tvId}`);
   };
   return (
     <>

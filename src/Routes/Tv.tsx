@@ -4,7 +4,7 @@ import { useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getLatestTv, IGetLatestTv } from "../api";
 import TvBanner from "../Components/Banner/TvBanner";
-import Detail from "../Components/Detail";
+import TvDetail from "../Components/Detail/TvDetail";
 import AiringTvSlider from "../Components/tvSlider/AiringTvSlider";
 import PopularTvSlider from "../Components/tvSlider/PopularTvSlider";
 import TopTvSlider from "../Components/tvSlider/TopTvSlider";
@@ -42,10 +42,7 @@ const BigBox = styled(motion.div)`
 `;
 
 function Tv() {
-  const { data, isLoading } = useQuery<IGetLatestTv>(
-    ["tv", "latest"],
-    getLatestTv
-  );
+  const { isLoading } = useQuery<IGetLatestTv>(["tv", "latest"], getLatestTv);
   const navigate = useNavigate();
   const tvMatch = useMatch("/tv/:tvId");
   const { scrollY } = useViewportScroll();
@@ -60,9 +57,9 @@ function Tv() {
         <>
           <TvBanner />
           <Sliders>
-            <AiringTvSlider />
             <PopularTvSlider />
             <TopTvSlider />
+            <AiringTvSlider />
           </Sliders>
           {
             <AnimatePresence>
@@ -77,7 +74,7 @@ function Tv() {
                     style={{ top: scrollY.get() + 50 }}
                     layoutId={tvMatch.params.tvId}
                   >
-                    <Detail />
+                    <TvDetail />
                   </BigBox>
                 </>
               ) : null}

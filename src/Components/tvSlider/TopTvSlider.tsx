@@ -4,12 +4,13 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getPopularTv, getTopTv, IGetTv } from "../../api";
+import { getTopTv, IGetTv } from "../../api";
 import { makeImgPath } from "../../utils";
 
 const Wrapper = styled.div`
   position: relative;
   top: -100px;
+  margin-bottom: 350px;
 `;
 const Row = styled(motion.div)`
   position: absolute;
@@ -157,7 +158,7 @@ function TopTvSlider() {
     }
   };
   const onBoxClick = (tvId: number) => {
-    navigate(`tv/${tvId}`);
+    navigate(`${tvId}`);
   };
   return (
     <>

@@ -4,7 +4,7 @@ import { useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getMovies, IGetMovies } from "../api";
 import MovieBanner from "../Components/Banner/MovieBanner";
-import Detail from "../Components/Detail";
+import MovieDetail from "../Components/Detail/MovieDetail";
 import Slider from "../Components/movieSlider/Slider";
 import TopMovieSlider from "../Components/movieSlider/TopMovieSlider";
 import UpcomingSlider from "../Components/movieSlider/UpcomingSlider";
@@ -76,7 +76,7 @@ function Home() {
                   style={{ top: scrollY.get() + 50 }}
                   layoutId={movieMatch.params.movieId}
                 >
-                  <Detail />
+                  <MovieDetail />
                 </BigBox>
               </>
             ) : null}

@@ -1,8 +1,8 @@
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getMovieDetail, getTvDetail, IMovieDetail } from "../api";
-import { makeImgPath } from "../utils";
+import { getTvDetail, ITvDetail } from "../../api";
+import { makeImgPath } from "../../utils";
 
 const Cover = styled.div`
   width: 100%;
@@ -38,68 +38,54 @@ const BigGenres = styled.div``;
 const Genres = styled.span`
   margin-right: 10px;
 `;
-const RunTime = styled.span``;
+const Season = styled.span``;
 const Overview = styled.p`
   padding: 0px 20px;
   position: relative;
   top: -20px;
   font-size: 18px;
 `;
-const Side = styled.div`
-  display: flex;
-  padding: 0px 20px;
-  font-size: 18px;
-`;
-const Adult = styled.span`
-  color: red;
-  font-weight: 400;
-`;
 
-function Detail() {
-  const { movieId, tvId } = useParams();
-  const { data: movieData, isLoading: movieLoading } = useQuery<IMovieDetail>(
-    ["detail"],
-    () => (movieId ? getMovieDetail(movieId) : getTvDetail(tvId as any))
+function TvDetail() {
+  const { tvId } = useParams();
+  const { data, isLoading } = useQuery<ITvDetail>(["detail", "tv"], () =>
+    getTvDetail(tvId)
   );
-
   return (
     <>
-      {movieLoading ? (
+      {isLoading ? (
         <span>Loading...</span>
       ) : (
         <>
           <Cover
             style={{
-              backgroundImage: movieData
+              backgroundImage: data
                 ? `linear-gradient(transparent, rgba(0,0,0,1)), url(${makeImgPath(
-                    movieData.backdrop_path
+                    data.backdrop_path
                   )})`
                 : undefined,
             }}
           />
           <Bold>
-            <Title>{movieData?.original_title}</Title>
-            <Rate>★ {movieData && movieData.vote_average}</Rate>
+            <Title>{data?.name}</Title>
+            <Rate>{data?.popularlity}</Rate>
           </Bold>
           <Header>
             <BigGenres>
-              {movieData &&
-                movieData.genres.map((genre) => (
+              {data &&
+                data.genres.map((genre) => (
                   <Genres key={genre.id}>{genre.name}</Genres>
                 ))}
             </BigGenres>
-            <RunTime>런닝타임: {movieData && movieData.runtime}분</RunTime>
+            <Season>
+              {data?.number_of_seasons}시즌 총{data?.number_of_episodes}회
+            </Season>
           </Header>
-          <Overview>{movieData && movieData.overview}</Overview>
-          <Side>
-            <Adult>
-              {movieData?.adult ? "청소년 관람 불가" : "전체 이용가"}
-            </Adult>
-          </Side>
+          <Overview>{data?.overview}</Overview>
         </>
       )}
     </>
   );
 }
 
-export default Detail;
+export default TvDetail;

@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import { getLatestTv, IGetLatestTv, IGetTv } from "../../api";
+import { getLatestTv, IGetLatestTv } from "../../api";
 import { makeImgPath } from "../../utils";
 
 const Banner = styled.div<{ bgPhoto: string }>`
@@ -23,7 +23,7 @@ const Overview = styled.p`
   width: 50%;
 `;
 
-function MovieBanner() {
+function TvBanner() {
   const { data } = useQuery<IGetLatestTv>(["tv", "latest"], getLatestTv);
   return (
     <Banner bgPhoto={makeImgPath(data?.backdrop_path || "")}>
@@ -33,4 +33,4 @@ function MovieBanner() {
   );
 }
 
-export default MovieBanner;
+export default TvBanner;

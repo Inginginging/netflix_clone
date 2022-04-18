@@ -10,7 +10,6 @@ import { makeImgPath } from "../../utils";
 const Wrapper = styled.div`
   position: relative;
   top: -100px;
-  margin-bottom: 350px;
 `;
 const Row = styled(motion.div)`
   position: absolute;
@@ -158,7 +157,7 @@ function AiringTvSlider() {
     }
   };
   const onBoxClick = (tvId: number) => {
-    navigate(`tv/${tvId}`);
+    navigate(`${tvId}`);
   };
   return (
     <>
