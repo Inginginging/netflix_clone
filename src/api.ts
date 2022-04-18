@@ -8,6 +8,14 @@ interface IMovie {
   title: string;
   overview: string;
 }
+interface ITv {
+  id: number;
+  backdrop_path: string;
+  overview: string;
+  poster_path: string;
+  name: string;
+  release_date?: string;
+}
 interface IGenres {
   id: number;
   name: string;
@@ -34,6 +42,17 @@ export interface IMovieDetail {
   vote_average: number;
   genres: IGenres[];
 }
+export interface IGetTv {
+  page: number;
+  results: ITv[];
+  total_pages: number;
+  total_results: number;
+}
+export interface IGetLatestTv {
+  backdrop_path: string;
+  name: string;
+  overview: string;
+}
 
 export const getMovies = () => {
   return fetch(
@@ -57,6 +76,26 @@ export const getMovieDetail = (movieId?: string) => {
 };
 
 //tv
+export function getLatestTv() {
+  return fetch(`${BASE_PATH}/tv/latest?api_key=${API_KEY}`).then((response) =>
+    response.json()
+  );
+}
+export function getPopularTv() {
+  return fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&lpage=3`).then(
+    (response) => response.json()
+  );
+}
+export function getTopTv() {
+  return fetch(`${BASE_PATH}/tv/top_rated?api_key=${API_KEY}&page=2`).then(
+    (response) => response.json()
+  );
+}
+export function getAiringTv() {
+  return fetch(`${BASE_PATH}/tv/airing_today?api_key=${API_KEY}&page=2`).then(
+    (response) => response.json()
+  );
+}
 export function getTvDetail(tvId: string) {
   return fetch(
     `${BASE_PATH}/tv/${tvId}?api_key=${API_KEY}&language=ko-KR`
